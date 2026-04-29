@@ -1,0 +1,39 @@
+{:deps {io.github.amiorin/once {:git/sha "e5bfad5a607c718ae9e9a2be8942aae7542d6aa3"
+                                #_#_:local/root "../once/main"}}
+ :tasks
+ {:requires ([io.github.amiorin.once.package :as package])
+  ai {:doc "bb once create | bb once delete"
+      :task (package/once*
+             *command-line-args*
+             {:big-config.render/profile "ai"
+              :big-config.workflow/params
+              {:provider-smtp    "resend"
+               :resend-server    "smtp.resend.com"
+               :resend-port      587
+               :resend-username  "resend"
+
+               :provider-dns     "cloudflare"
+
+               :provider-backend "s3"
+               :s3-bucket        "tf-state-251213589273-eu-west-1"
+               :s3-region        "eu-west-1"
+
+               :provider-compute            "oci"
+               :oci-config-file-profile     "DEFAULT"
+               :oci-subnet-id               "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaaotya32pihejgi25vrdfnjda3qg52kpsjnd7od5oiqifbsi4rqqma"
+               :oci-compartment-id          "ocid1.tenancy.oc1..aaaaaaaal4wmmpzv2fzkdz2vrfdizywgzjid6dqlgcankrrr7jyydo7ozb3a"
+               :oci-availability-domain     "xTQn:EU-FRANKFURT-1-AD-1"
+               :oci-display-name            "my-ampere-instance"
+               :oci-shape                   "VM.Standard.A1.Flex"
+               :oci-ocpus                   1
+               :oci-memory-in-gbs           6
+               :oci-boot-volume-size-in-gbs 50
+               :oci-boot-volume-vpus-per-gb 30
+               :oci-ssh-authorized-keys     "~/.ssh/id_ed25519.pub"
+
+               :domain  "bigconfig.ai"
+               :package "ai"
+               :once    {:applications [{:host  "www.bigconfig.ai"
+                                         :image "ghcr.io/amiorin/once-bigconfig"}
+                                        {:host  "bigconfig.ai"
+                                         :image "ghcr.io/amiorin/once-caddy-redirect"}]}}})}}}
