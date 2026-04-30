@@ -36,7 +36,10 @@
             :once    {:applications [{:host  "www.bigconfig.ai"
                                       :image "ghcr.io/amiorin/once-bigconfig"}
                                      {:host  "bigconfig.ai"
-                                      :image "ghcr.io/amiorin/once-caddy-redirect"}]}}})
+                                      :image "ghcr.io/amiorin/once-caddy-redirect"}
+                                     {:host "forms.bigconfig.ai"
+                                      :image "ghcr.io/bigconfig-ai/once-forms:latest"
+                                      :env ["TARGET_EMAIL=forms@bigconfig.ai"]}]}}})
   help {:doc "the workflow help"
         :override-builtin true
         :task (println "Usage: bb <step|cmd>+ -- [raw-command]
