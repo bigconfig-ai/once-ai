@@ -1,6 +1,6 @@
 # once-ai
 
-Deployment configuration for [bigconfig.ai](https://www.bigconfig.ai), built on top of [`io.github.amiorin/once`](https://github.com/amiorin/once).
+Deployment configuration for [bigconfig.ai](https://www.bigconfig.ai), built on top of [`io.github.bigconfig-ai/once`](https://github.com/bigconfig-ai/once).
 
 This repo is a thin [Babashka](https://babashka.org/) shim: `bb.edn` pins the `once` library to a specific git sha and passes a single params map describing the providers and applications to deploy.
 
@@ -20,8 +20,10 @@ bb ai delete   # tear down
 - **SMTP**: Resend
 - **Terraform state**: S3 (`eu-west-1`)
 - **Applications** (containers, see `bb.edn`):
-  - `ghcr.io/amiorin/once-bigconfig` → `www.bigconfig.ai`
-  - `ghcr.io/amiorin/once-caddy-redirect` → `bigconfig.ai`
+  - `ghcr.io/bigconfig-ai/once-bigconfig` → `www.bigconfig.ai`
+  - `ghcr.io/bigconfig-ai/once-caddy-redirect` → `bigconfig.ai` (apex redirect)
+  - `ghcr.io/bigconfig-ai/once-forms` → `forms.bigconfig.ai`
+  - `ghcr.io/bigconfig-ai/once-bigconfig-marketplace` → `marketplace.bigconfig.ai` (Litestream-backed PocketBase with Google OAuth)
 
 ## Configuration
 
@@ -31,4 +33,4 @@ For local development against a checkout of the `once` repo, swap the active key
 
 ## Secrets
 
-Provider credentials are supplied via `BC_PAR_*` environment variables loaded from `.envrc` (gitignored, managed with [direnv](https://direnv.net/)). Required tokens cover Hetzner, Cloudflare, DigitalOcean, Resend, AWS (Litestream), and PocketBase superuser credentials.
+Provider credentials are supplied via `BC_PAR_*` environment variables loaded from `.envrc` (gitignored, managed with [direnv](https://direnv.net/)). See [`.envrc.example`](./.envrc.example) for the full list of required variables — currently Cloudflare, Resend, AWS (Litestream), Google OAuth, and PocketBase superuser credentials.

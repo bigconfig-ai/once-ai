@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A thin configuration shim for [`io.github.amiorin/once`](https://github.com/amiorin/once). There is no application source here — `bb.edn` declares the upstream library as a git dep and invokes `package/once*` with the `"ai"` profile and a single map of provider/workflow params. The actual logic (rendering, packaging, deploying) lives in the `once` library; everything in this repo is parameters for that library.
+A thin configuration shim for [`io.github.bigconfig-ai/once`](https://github.com/bigconfig-ai/once). There is no application source here — `bb.edn` declares the upstream library as a git dep and invokes `package/once*` with the `"ai"` profile and a single map of provider/workflow params. The actual logic (rendering, packaging, deploying) lives in the `once` library; everything in this repo is parameters for that library. Note the dep coordinate is `io.github.bigconfig-ai/once` but the library's own namespaces are still `io.github.amiorin.once.*` — both forms appear in `bb.edn`.
 
 ## Commands
 
@@ -16,10 +16,14 @@ The single task `ai` is defined in `bb.edn`; there is no test suite, build step,
 
 ## Architecture
 
-- **`bb.edn`** is the entire codebase. It pins `io.github.amiorin/once` to a specific git sha and passes one params map covering: SMTP (Resend), DNS (Cloudflare), Terraform state backend (S3 in `eu-west-1`), compute (Oracle Cloud Ampere A1.Flex in `eu-frankfurt-1`), and the deployable `:once` applications.
-- **`:once {:applications [...]}`** lists the containers to run on the provisioned host. Currently `ghcr.io/amiorin/once-bigconfig` on `www.bigconfig.ai` and `ghcr.io/amiorin/once-caddy-redirect` on the apex `bigconfig.ai`.
+- **`bb.edn`** is the entire codebase. It pins `io.github.bigconfig-ai/once` to a specific git sha and passes one params map covering: SMTP (Resend), DNS (Cloudflare), Terraform state backend (S3 in `eu-west-1`), compute (Oracle Cloud Ampere A1.Flex in `eu-frankfurt-1`), and the deployable `:once` applications.
+- **`:once {:applications [...]}`** lists the containers to run on the provisioned host. Currently:
+  - `ghcr.io/bigconfig-ai/once-bigconfig` on `www.bigconfig.ai`
+  - `ghcr.io/bigconfig-ai/once-caddy-redirect` on the apex `bigconfig.ai`
+  - `ghcr.io/bigconfig-ai/once-forms` on `forms.bigconfig.ai`
+  - `ghcr.io/bigconfig-ai/once-bigconfig-marketplace` on `marketplace.bigconfig.ai` (Litestream-backed PocketBase with Google OAuth; env values use `<{ ... }>` placeholders resolved from `BC_PAR_*`)
 - **`.dist/ai-<hash>/`** is generated output from `bb ai create` — the rendered package tree under `io/github/amiorin/once/...`. Do not edit by hand; re-render via the task.
-- **`.envrc`** supplies `BC_PAR_*` secrets (Hetzner, Cloudflare, DigitalOcean, Resend, Litestream/S3, PocketBase superuser) consumed by the `once` workflow at runtime. Loaded automatically by direnv.
+- **`.envrc`** supplies `BC_PAR_*` secrets (Cloudflare, Resend, Litestream/S3, PocketBase superuser, Google OAuth) consumed by the `once` workflow at runtime. Loaded automatically by direnv. `.envrc.example` is committed as a template listing the expected variable names with empty values.
 
 ## Editing params
 
@@ -27,4 +31,4 @@ To change deployment configuration (region, shape, applications, domain), edit t
 
 ## Secrets warning
 
-`.envrc` is gitignored but contains live API tokens for Hetzner, Cloudflare, DigitalOcean, Resend, and AWS. Do not echo, commit, or paste its contents. If asked to debug auth, refer to variables by name only.
+`.envrc` is gitignored but contains live API tokens for Cloudflare, Resend, AWS (Litestream), and Google OAuth, plus PocketBase superuser credentials. Do not echo, commit, or paste its contents. If asked to debug auth, refer to variables by name only. Use `.envrc.example` (committed) as the source of truth for which `BC_PAR_*` variables are required.

@@ -1,5 +1,6 @@
-{:deps {io.github.amiorin/once {:git/sha "e6b407262da206f2ccc4b5e1d825be7237a14f2e"
-                                #_#_:local/root "../once/main"}}
+{:deps {io.github.bigconfig-ai/once {:git/sha "e6b407262da206f2ccc4b5e1d825be7237a14f2e"
+                                     #_#_:local/root "../once/main"}}
+
  :tasks
  {:requires ([io.github.amiorin.once.package :as package]
              [io.github.amiorin.once.params :as params]
@@ -36,7 +37,7 @@
             :once    {:applications [{:host  "www.bigconfig.ai"
                                       :image "ghcr.io/bigconfig-ai/once-bigconfig:latest"}
                                      {:host  "bigconfig.ai"
-                                      :image "ghcr.io/amiorin/once-caddy-redirect:latest"}
+                                      :image "ghcr.io/bigconfig-ai/once-caddy-redirect:latest"}
                                      {:host "forms.bigconfig.ai"
                                       :image "ghcr.io/bigconfig-ai/once-forms:latest"
                                       :env ["TARGET_EMAIL=forms@bigconfig.ai"]}
