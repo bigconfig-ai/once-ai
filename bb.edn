@@ -1,10 +1,11 @@
-{:deps {io.github.bigconfig-ai/once {:git/sha "17ca4b2512dadc8b39af23920881b3fc6659d754"
+{:deps {io.github.bigconfig-ai/once {:git/sha "3b9d4adbda8b93db902845cd892f1726e1b42397"
                                      #_#_:local/root "../once/main"}}
 
  :tasks
  {:requires ([io.github.amiorin.once.package :as package]
              [io.github.amiorin.once.params :as params]
-             [io.github.amiorin.once.tools :as tools])
+             [io.github.amiorin.once.tools :as tools]
+             [io.github.amiorin.once.validation :as validation])
   :init (def opts
           {:big-config.render/profile "ai"
            :big-config.workflow/params
@@ -66,6 +67,8 @@ See:
                   (shell "clojure-lsp format"))}
   ai {:doc "bb ai create | bb ai delete"
       :task (package/once* *command-line-args* opts)}
+  validate {:doc "bb validate"
+            :task (validation/validate* *command-line-args* opts)}
   tofu {:doc "bb tofu render tofu:init lock tofu:apply:-auto-approve"
         :task (tools/tofu* *command-line-args* (params/once-opts opts))}
   tofu-dns {:doc "bb tofu-dns render tofu:init lock tofu:apply:-auto-approve"
