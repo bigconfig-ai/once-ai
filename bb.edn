@@ -57,27 +57,47 @@
                                             "GOOGLE_CLIENT_SECRET=<{ google-client-secret }>"]}]}}})
   help {:doc "the workflow help"
         :override-builtin true
-        :task (println "Usage: bb <step|cmd>+ -- [raw-command]
+        :task (println "Usage: bb <task> [args...]
+
+Tasks:
+  ai        Provision or tear down infrastructure for the active profile.
+            Usage:
+              bb ai create             Run the full 6-stage create pipeline:
+                                         tofu -> tofu-smtp -> tofu-dns ->
+                                         tofu-smtp-post -> ansible -> ansible-local
+              bb ai delete             Reverse the 4 Tofu stages (destroy order 4->3->2->1).
+              bb ai delete create      Clean-slate redeploy.
+            Notes:
+              * Compute resources render with prevent_destroy = true by default.
+                Override with: BC_PAR_COMPUTE_PREVENT_DESTROY=false bb ai delete
+
+  validate  Pre-flight checks for the active profile. Verifies:
+              * profile schema (malli)
+              * required CLIs are installed
+              * credentials are present
+              * referenced docker images are reachable
+            Usage:
+              bb validate
 
 See:
-* https://bigconfig.it/paramss/intro/
-* https://bigconfig.it/api/workflow/")}
-  tidy {:doc "tidy clojure files"
-        :task (do (shell "clojure-lsp clean-ns")
-                  (shell "clojure-lsp format"))}
+* https://bigconfig.ai/paramss/intro/
+* https://bigconfig.ai/api/workflow/")}
   ai {:doc "bb ai create | bb ai delete"
       :task (package/once* *command-line-args* opts)}
-  validate {:doc "bb validate"
+  validate {:doc "validate active profile, tools, credentials, and docker images"
             :task (validation/validate* *command-line-args* opts)}
-  tofu {:doc "bb tofu render tofu:init lock tofu:apply:-auto-approve"
-        :task (tools/tofu* *command-line-args* (params/once-opts opts))}
-  tofu-dns {:doc "bb tofu-dns render tofu:init lock tofu:apply:-auto-approve"
-            :task (tools/tofu-dns* *command-line-args* (params/once-opts opts))}
-  tofu-smtp {:doc "bb tofu-smtp render tofu:init lock tofu:apply:-auto-approve"
-             :task (tools/tofu-smtp* *command-line-args* (params/once-opts opts))}
-  tofu-smtp-post {:doc "bb tofu-smtp-post render tofu:init lock tofu:apply:-auto-approve"
-                  :task (tools/tofu-smtp-post* *command-line-args* (params/once-opts opts))}
-  ansible {:doc "bb ansible render -- ansible-playbook main.yml"
-           :task (tools/ansible* *command-line-args* (params/once-opts opts))}
-  ansible-local {:doc "bb ansible render -- ansible-playbook main.yml"
-                 :task (tools/ansible-local* *command-line-args* (params/once-opts opts))}}}
+  -tofu {:doc "bb -tofu render tofu:init tofu:apply:-auto-approve"
+         :task (tools/tofu* *command-line-args* (params/once-opts opts))}
+  -tofu-dns {:doc "bb -tofu-dns render tofu:init tofu:apply:-auto-approve"
+             :task (tools/tofu-dns* *command-line-args* (params/once-opts opts))}
+  -tofu-smtp {:doc "bb -tofu-smtp render tofu:init tofu:apply:-auto-approve"
+              :task (tools/tofu-smtp* *command-line-args* (params/once-opts opts))}
+  -tofu-smtp-post {:doc "bb -tofu-smtp-post render tofu:init tofu:apply:-auto-approve"
+                   :task (tools/tofu-smtp-post* *command-line-args* (params/once-opts opts))}
+  -ansible {:doc "bb -ansible render -- ansible-playbook main.yml"
+            :task (tools/ansible* *command-line-args* (params/once-opts opts))}
+  -ansible-local {:doc "bb -ansible-local render -- ansible-playbook main.yml"
+                  :task (tools/ansible-local* *command-line-args* (params/once-opts opts))}
+  -tidy {:doc "tidy clojure files"
+         :task (do (shell "clojure-lsp clean-ns")
+                   (shell "clojure-lsp format"))}}}
