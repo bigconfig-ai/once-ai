@@ -1,4 +1,4 @@
-{:deps {io.github.bigconfig-ai/once {:git/sha "e6b407262da206f2ccc4b5e1d825be7237a14f2e"
+{:deps {io.github.bigconfig-ai/once {:git/sha "17ca4b2512dadc8b39af23920881b3fc6659d754"
                                      #_#_:local/root "../once/main"}}
 
  :tasks
@@ -12,6 +12,8 @@
             :resend-server    "smtp.resend.com"
             :resend-port      587
             :resend-username  "resend"
+
+            :deploy-pubkey    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1Lbgxiv2OnDKwc8Wx25SQlGyI+iY1drUii/IMZ3YSh deploy@bigconfig.ai"
 
             :provider-dns     "cloudflare"
 
