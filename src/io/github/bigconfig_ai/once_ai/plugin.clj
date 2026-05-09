@@ -4,6 +4,7 @@
    [big-config :as bc]
    [big-config.core :as core]
    [big-config.pluggable :refer [handle-step]]
+   [big-config.utils :refer [debug]]
    [big-config.workflow :as workflow]
    [cheshire.core :as json]
    [clojure.string :as str]))
@@ -26,22 +27,22 @@
       :else (throw (ex-info "gh api failed reading SERVER_IP"
                             {:exit exit :err err})))))
 
-(defn- selected-repo-ids
+(defn- selected-repo-names
   []
   (let [{:keys [out]}
         (process/shell {:out :string}
-                       "gh" "api"
+                       "gh" "api" "--paginate"
                        (str "/orgs/" org "/actions/secrets/" secret-name
                             "/repositories"))]
     (->> (json/parse-string out true)
          :repositories
-         (map :id))))
+         (map :name))))
 
 (defn update-github-secret
   [opts]
   (let [ip (get-in opts [::workflow/params :ip])
         visibility (or (secret-visibility) "all")
-        repos (when (= visibility "selected") (selected-repo-ids))
+        repos (when (= visibility "selected") (selected-repo-names))
         cmd (cond-> ["gh" "secret" "set" secret-name
                      "--org" org
                      "--body" ip
@@ -56,3 +57,8 @@
     (if (zero? (::bc/exit opts'))
       (update-github-secret opts')
       opts')))
+
+(comment
+  (debug tap-values
+    (update-github-secret {::workflow/params {:ip "92.5.179.95"}}))
+  (-> tap-values))
