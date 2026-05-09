@@ -51,6 +51,7 @@
                                             "LITESTREAM_REGION=<{ litestream-region }>"
                                             "LITESTREAM_ACCESS_KEY_ID=<{ litestream-access-key-id }>"
                                             "LITESTREAM_SECRET_ACCESS_KEY=<{ litestream-secret-access-key }>"
+                                            "LITESTREAM_SYNC_INTERVAL=<{ litestream-sync-interval }>"
                                             "SUPERUSER_EMAIL=<{ superuser-email }>"
                                             "SUPERUSER_PASSWORD=<{ superuser-password }>"
                                             "GOOGLE_CLIENT_ID=<{ google-client-id }>"
