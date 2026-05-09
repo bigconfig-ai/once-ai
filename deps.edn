@@ -1,0 +1,3 @@
+{:paths ["src"]
+ :deps {io.github.bigconfig-ai/once {:git/sha "686004c10fc0ab9113961949df771ef54fdb82bd"
+                                     #_#_:local/root "../once/main"}}}
