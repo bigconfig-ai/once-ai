@@ -82,8 +82,7 @@ Tasks:
               bb validate
 
 See:
-* https://bigconfig.it/paramss/intro/
-* https://bigconfig.it/api/workflow/")}
+* https://www.bigconfig.ai/manual/")}
   ai {:doc "bb ai create | bb ai delete"
       :task (package/once* *command-line-args* opts)}
   validate {:doc "validate active profile, tools, credentials, and docker images"
