@@ -1,6 +1,7 @@
 {:deps {local/deps {:local/root "."}}
  :tasks
- {:requires ([io.github.amiorin.once.package :as package]
+ {:requires ([io.github.amiorin.once.describe :as describe]
+             [io.github.amiorin.once.package :as package]
              [io.github.amiorin.once.params :as params]
              [io.github.amiorin.once.tools :as tools]
              [io.github.amiorin.once.validation :as validation]
@@ -13,6 +14,7 @@
             :resend-port      587
             :resend-username  "resend"
 
+            :compute-pubkey "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"
             :deploy-pubkey    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1Lbgxiv2OnDKwc8Wx25SQlGyI+iY1drUii/IMZ3YSh deploy@bigconfig.ai"
 
             :provider-dns     "cloudflare"
@@ -86,14 +88,17 @@ See:
       :task (package/once* *command-line-args* opts)}
   validate {:doc "validate active profile, tools, credentials, and docker images"
             :task (validation/validate* *command-line-args* opts)}
+  describe {:doc "describe active profile providers, compute, and deployed applications"
+            :override-builtin true
+            :task (describe/describe* *command-line-args* opts)}
   -test {:doc "run plugin tests"
-        :extra-paths ["test"]
-        :task (do
-                (require 'io.github.bigconfig-ai.once-ai.plugin-test)
-                (let [{:keys [fail error]}
-                      (clojure.test/run-tests 'io.github.bigconfig-ai.once-ai.plugin-test)]
-                  (when (pos? (+ fail error))
-                    (System/exit 1))))}
+         :extra-paths ["test"]
+         :task (do
+                 (require 'io.github.bigconfig-ai.once-ai.plugin-test)
+                 (let [{:keys [fail error]}
+                       (clojure.test/run-tests 'io.github.bigconfig-ai.once-ai.plugin-test)]
+                   (when (pos? (+ fail error))
+                     (System/exit 1))))}
   -tofu {:doc "bb -tofu render tofu:init tofu:apply:-auto-approve"
          :task (tools/tofu* *command-line-args* (params/once-opts opts))}
   -tofu-dns {:doc "bb -tofu-dns render tofu:init tofu:apply:-auto-approve"
