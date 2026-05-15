@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>once-ai — Manual</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f7f8fa;
+    --bg-code: #f5f6f8;
+    --text: #1f2328;
+    --text-muted: #57606a;
+    --text-soft: var(--text-muted);
+    --text-mute: var(--text-muted);
+    --border: #d0d7de;
+    --border-soft: #eaeef2;
+    --accent: #2f6feb;
+    --accent-soft: #ddebff;
+    --warn: #9a6700;
+    --danger: #cf222e;
+    --ok: #1a7f37;
+    --kbd-bg: #f6f8fa;
+    --kw: #cf222e;
+    --str: #0a3069;
+    --num: #953800;
+    --com: #6e7781;
+    --fn: #8250df;
+    --maxw-content: 820px;
+  }
+  * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 16px;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre, kbd, samp, .mono {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+  }
+  code {
+    background: var(--bg-code);
+    padding: 1px 5px;
+    border-radius: 4px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  pre { margin: 14px 0; }
+  pre code {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    background: var(--bg-soft);
+    color: inherit;
+    overflow-x: auto;
+    overflow-wrap: normal;
+    white-space: pre;
+    word-break: normal;
+    line-height: 1.5;
+  }
+  kbd, .kbd {
+    background: var(--kbd-bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border-soft);
+    margin: 32px 0;
+  }
+  ul, ol {
+    margin: 0 0 12px;
+    padding-left: 22px;
+  }
+  li { margin: 3px 0; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  aside {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border-soft);
+    background: var(--bg-soft);
+    padding: 24px 18px;
+  }
+  aside .brand {
+    display: block;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    padding: 0 6px 4px;
+    text-decoration: none;
+  }
+  aside .brand:hover { text-decoration: none; }
+  aside .tag {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin: 0 0 10px;
+    padding: 0 6px 10px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  aside nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 14px;
+  }
+  aside nav li { margin: 0; }
+  aside nav .group {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 12px 6px 4px;
+  }
+  aside nav a {
+    display: block;
+    color: var(--text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13.5px;
+  }
+  aside nav a:hover {
+    background: var(--accent-soft);
+    text-decoration: none;
+  }
+  aside nav a.sub {
+    padding-left: 18px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  main {
+    padding: 40px 56px 80px;
+    max-width: calc(var(--maxw-content) + 112px);
+    min-width: 0;
+    width: 100%;
+  }
+  main h1,
+  main h2,
+  main h3,
+  main h4 {
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0;
+  }
+  main h1 {
+    font-size: 32px;
+    margin: 0 0 4px;
+    letter-spacing: -0.015em;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 44px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-soft);
+    letter-spacing: -0.01em;
+  }
+  main h3 {
+    font-size: 17px;
+    margin: 28px 0 8px;
+  }
+  main h4 {
+    font-size: 14px;
+    margin: 20px 0 6px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  main p,
+  main ul,
+  main ol {
+    max-width: var(--maxw-content);
+  }
+  p {
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+  p.lead {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  table {
+    border-collapse: collapse;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 12px 0 18px;
+    font-size: 13.5px;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-soft);
+    vertical-align: top;
+  }
+  th {
+    background: var(--bg-soft);
+    font-weight: 600;
+    color: var(--text);
+  }
+  td code { white-space: nowrap; }
+
+  .note {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .note.warn { border-left-color: var(--warn); }
+  .note.ok { border-left-color: var(--ok); }
+  .note.danger { border-left-color: var(--danger); }
+  .note p:last-child { margin-bottom: 0; }
+  .note .label {
+    display: inline-block;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .card {
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 14px;
+    background: var(--bg);
+  }
+  .card h4 {
+    margin: 0 0 6px;
+    color: var(--text);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+  }
+  .card .sub {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-bottom: 8px;
+  }
+  .card ul {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 13px;
+  }
+
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    margin: 14px 0 18px;
+  }
+  .pipeline .stage {
+    border: 1px solid var(--border-soft);
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .pipeline .stage .n {
+    display: inline-block;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    margin-bottom: 6px;
+  }
+  .pipeline .stage .label {
+    color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .pipeline .stage .sub {
+    color: var(--text-muted);
+    font-size: 10.5px;
+  }
+
+  .pill,
+  .card .pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .kw { color: var(--kw); }
+  .str { color: var(--str); }
+  .num { color: var(--num); }
+  .com {
+    color: var(--com);
+    font-style: italic;
+  }
+  .fn { color: var(--fn); }
+  .ns { color: var(--text-muted); }
+
+  section,
+  h2,
+  h3 {
+    scroll-margin-top: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    main { padding: 24px 20px 60px; }
+    .grid { grid-template-columns: 1fr; }
+    .pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 520px) {
+    main { padding: 22px 16px 56px; }
+    aside { padding: 20px 14px; }
+    .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <a href="https://www.bigconfig.ai/" class="brand">← once-ai</a>
+    <div class="tag">manual · v1</div>
+    <nav>
+      <div class="group">Get Started</div>
+      <ul>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#at-a-glance">At a glance</a></li>
+        <li><a href="#quickstart">Quick Start</a></li>
+        <li><a href="#prereqs">Prerequisites</a></li>
+        <li><a href="#safety">Safety model</a></li>
+      </ul>
+
+      <div class="group">Architecture</div>
+      <ul>
+        <li><a href="#repo-model">Repository model</a></li>
+        <li><a href="#dependency-model">Dependency model</a></li>
+        <li><a href="#pipeline">Upstream pipeline</a></li>
+        <li><a href="#param-flow">Parameter flow</a></li>
+        <li><a href="#plugin">Local plugin</a></li>
+      </ul>
+
+      <div class="group">Configuration</div>
+      <ul>
+        <li><a href="#active-profile">Active profile</a></li>
+        <li><a href="#providers">Providers</a></li>
+        <li><a href="#applications">Applications</a></li>
+        <li><a href="#env-vars">BC_PAR_* variables</a></li>
+        <li><a href="#editing">Editing configuration</a></li>
+      </ul>
+
+      <div class="group">Commands</div>
+      <ul>
+        <li><a href="#tasks">Task inventory</a></li>
+        <li><a href="#ai-command">bb ai</a></li>
+        <li><a href="#validate">bb validate</a></li>
+        <li><a href="#describe">bb describe</a></li>
+        <li><a href="#stage-tasks">Stage tasks</a></li>
+        <li><a href="#tests">Tests and tidy</a></li>
+      </ul>
+
+      <div class="group">Operations</div>
+      <ul>
+        <li><a href="#deploy-runbook">Deploy runbook</a></li>
+        <li><a href="#teardown-runbook">Teardown runbook</a></li>
+        <li><a href="#update-runbook">Update runbook</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+      </ul>
+
+      <div class="group">Reference</div>
+      <ul>
+        <li><a href="#files">File reference</a></li>
+        <li><a href="#param-table">Parameter table</a></li>
+        <li><a href="#links">Public links</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="top">
+    <h1>once-ai</h1>
+    <p class="lead">A highly specific deployment shim for <a href="https://www.bigconfig.ai/">bigconfig.ai</a>. It pins the upstream <a href="https://github.com/bigconfig-ai/once"><code>io.github.bigconfig-ai/once</code></a> library and feeds it one active <code>ai</code> profile that provisions Oracle Cloud infrastructure, Cloudflare DNS, Resend email, S3-backed OpenTofu state, and the ONCE applications for the <code>bigconfig.ai</code> domain.</p>
+    <div class="header-meta">
+      <span class="pill">Babashka</span>
+      <span class="pill">Clojure deps.edn</span>
+      <span class="pill">OpenTofu</span>
+      <span class="pill">Ansible</span>
+      <span class="pill">Oracle Cloud</span>
+      <span class="pill">Cloudflare</span>
+      <span class="pill">Resend</span>
+      <span class="pill">GitHub CLI plugin</span>
+    </div>
+
+    <section id="intro">
+      <h2>Introduction</h2>
+      <p><code>once-ai</code> is not an application repository. It contains the configuration needed to run an upstream <code>once</code> deployment for <code>bigconfig.ai</code>. The executable logic lives in the <code>once</code> dependency; this repo supplies the active params map, local task names, a small GitHub Actions secret plugin, and tests for that plugin.</p>
+      <p>The important distinction is:</p>
+      <ul>
+        <li><strong>Dependency coordinate:</strong> <code>io.github.bigconfig-ai/once</code>, pinned in <code>deps.edn</code>.</li>
+        <li><strong>Upstream namespaces:</strong> still <code>io.github.amiorin.once.*</code>, required by <code>bb.edn</code>.</li>
+        <li><strong>Local namespace:</strong> <code>io.github.bigconfig-ai.once-ai.plugin</code>, used to add one side effect to the upstream workflow.</li>
+      </ul>
+      <div class="note warn"><span class="label">Secret policy</span>This manual intentionally documents variable names and data flow, not live secret values. Do not paste <code>.envrc</code>, API tokens, OAuth credentials, superuser passwords, or cloud access keys into docs, logs, issues, or commits.</div>
+    </section>
+
+    <section id="at-a-glance">
+      <h2>At a glance</h2>
+      <table>
+        <thead><tr><th>Axis</th><th>Current value</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Profile</td><td><code>ai</code></td><td><code>:big-config.render/profile</code> in <code>bb.edn</code></td></tr>
+          <tr><td>Domain</td><td><code>bigconfig.ai</code></td><td><code>:domain</code> in <code>bb.edn</code></td></tr>
+          <tr><td>Package</td><td><code>ai</code></td><td><code>:package</code> in <code>bb.edn</code></td></tr>
+          <tr><td>Compute</td><td>Oracle Cloud Infrastructure, Ampere A1.Flex</td><td><code>:provider-compute "oci"</code></td></tr>
+          <tr><td>Region / AD</td><td><code>eu-frankfurt-1</code>, AD <code>EU-FRANKFURT-1-AD-1</code></td><td>OCI params in <code>bb.edn</code></td></tr>
+          <tr><td>Shape</td><td><code>VM.Standard.A1.Flex</code>, 1 OCPU, 6 GiB RAM, 50 GiB boot volume</td><td>OCI params in <code>bb.edn</code></td></tr>
+          <tr><td>DNS</td><td>Cloudflare</td><td><code>:provider-dns "cloudflare"</code></td></tr>
+          <tr><td>SMTP</td><td>Resend SMTP on <code>smtp.resend.com:587</code></td><td><code>:provider-smtp "resend"</code></td></tr>
+          <tr><td>OpenTofu state</td><td>S3 bucket in <code>eu-west-1</code></td><td><code>:provider-backend "s3"</code></td></tr>
+          <tr><td>Applications</td><td>4 containers under <code>bigconfig.ai</code></td><td><code>:once :applications</code></td></tr>
+          <tr><td>Post-local side effect</td><td>Update GitHub org Actions secret <code>SERVER_IP</code></td><td><code>src/io/github/bigconfig_ai/once_ai/plugin.clj</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="quickstart">
+      <h2>Quick Start</h2>
+
+      <h3>1. Install local tooling</h3>
+      <p>Install the base tools in <a href="#prereqs">Prerequisites</a>. At minimum you need Babashka, Clojure CLI dependency resolution, OpenTofu, Ansible, SSH, curl, skopeo, OCI CLI, AWS CLI, and GitHub CLI.</p>
+<pre><code><span class="kw">bb</span> tasks
+<span class="kw">bb</span> help</code></pre>
+      <p>The first invocation may resolve the pinned upstream <code>once</code> git dependency into <code>~/.gitlibs</code>.</p>
+
+      <h3>2. Provide secrets and operator credentials</h3>
+      <p>Create a private <code>.envrc</code> from <code>.envrc.example</code>, fill values locally, then allow direnv if you use it.</p>
+<pre><code><span class="kw">cp</span> .envrc.example .envrc
+<span class="com"># edit .envrc without committing it</span>
+<span class="kw">direnv</span> allow</code></pre>
+      <p>Also ensure standard provider credentials are available outside <code>BC_PAR_*</code> where the provider CLIs expect them: OCI CLI config for profile <code>DEFAULT</code>, AWS credentials capable of accessing the OpenTofu state bucket, and an authenticated <code>gh</code> session with permission to set organization Actions secrets.</p>
+
+      <h3>3. Load the compute private key</h3>
+      <p>The public key in <code>:compute-pubkey</code> must match a private key loaded in <code>ssh-agent</code>. Upstream validation checks this for cloud compute profiles because Ansible needs the agent to reach the new VM.</p>
+<pre><code><span class="kw">ssh-add</span> -L
+<span class="kw">ssh-add</span> ~/.ssh/id_ed25519</code></pre>
+
+      <h3>4. Validate</h3>
+<pre><code><span class="kw">bb</span> validate</code></pre>
+      <p>This runs upstream pre-flight checks for schema, tools, credentials, image reachability, Cloudflare zone presence, and ssh-agent state. It does not fully validate the local GitHub secret plugin; check <code>gh auth status</code> separately.</p>
+
+      <h3>5. Create / reconcile</h3>
+<pre><code><span class="kw">bb</span> ai create</code></pre>
+      <p>The upstream workflow renders templates into <code>.dist/</code>, provisions or reconciles infrastructure with OpenTofu, configures the host with Ansible, and reconciles the configured ONCE applications.</p>
+
+      <h3>6. Describe</h3>
+<pre><code><span class="kw">bb</span> describe</code></pre>
+      <p>Use the upstream describe command to inspect providers, compute reachability, and deployed ONCE applications.</p>
+
+      <h3>7. Delete</h3>
+<pre><code><span class="kw">export</span> BC_PAR_COMPUTE_PREVENT_DESTROY=<span class="str">false</span>
+<span class="kw">bb</span> ai delete</code></pre>
+      <div class="note warn"><span class="label">Warn</span>The upstream compute templates use <code>prevent_destroy</code> by default. Deletion is intentionally blocked until you explicitly override the safety flag.</div>
+    </section>
+
+    <section id="prereqs">
+      <h2>Prerequisites</h2>
+      <p>The precise list of required commands is profile-dependent and is enforced by upstream <code>bb validate</code>. For this repo's active profile, expect the following local tools and credentials.</p>
+      <table>
+        <thead><tr><th>Tool / credential</th><th>Why it is needed</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>bb</code></td><td>Runs all tasks in <code>bb.edn</code>.</td><td><a href="https://babashka.org/">babashka.org</a></td></tr>
+          <tr><td><code>clojure</code></td><td>Resolves <code>deps.edn</code> and git dependencies.</td><td><a href="https://clojure.org/guides/install_clojure">Clojure install guide</a></td></tr>
+          <tr><td><code>tofu</code></td><td>OpenTofu stages for compute, SMTP, DNS, and post-SMTP verification.</td><td><a href="https://opentofu.org/docs/intro/install/">OpenTofu docs</a></td></tr>
+          <tr><td><code>ansible-playbook</code></td><td>Local SSH config and remote host configuration.</td><td><a href="https://docs.ansible.com/">Ansible docs</a></td></tr>
+          <tr><td><code>ssh</code> / <code>ssh-agent</code></td><td>Remote host access; validation checks that <code>:compute-pubkey</code> is loaded.</td><td>Use <code>ssh-add -L</code> to inspect loaded public keys.</td></tr>
+          <tr><td><code>curl</code></td><td>Credential checks against provider APIs.</td><td>Usually available from the OS package manager.</td></tr>
+          <tr><td><code>skopeo</code></td><td>Container image resolution and digest checks.</td><td><a href="https://github.com/containers/skopeo">containers/skopeo</a></td></tr>
+          <tr><td><code>oci</code></td><td>Oracle Cloud provider validation and operations.</td><td>Configured profile: <code>DEFAULT</code>. See <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm">OCI CLI docs</a>.</td></tr>
+          <tr><td><code>aws</code></td><td>S3-backed OpenTofu state access.</td><td>AWS CLI credentials must be able to access the state bucket in <code>eu-west-1</code>.</td></tr>
+          <tr><td><code>gh</code></td><td>Local plugin updates GitHub org secret <code>SERVER_IP</code>.</td><td>Run <code>gh auth status</code>; org secret changes usually require elevated organization permissions.</td></tr>
+          <tr><td><code>direnv</code></td><td>Optional but expected workflow for loading <code>BC_PAR_*</code> values.</td><td><a href="https://direnv.net/">direnv.net</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="safety">
+      <h2>Safety model</h2>
+      <ul>
+        <li><strong>Secrets are external.</strong> Runtime credentials are read from environment variables and provider CLIs, not from tracked source.</li>
+        <li><strong>Generated output is disposable.</strong> <code>.dist/</code> is rendered by upstream <code>once</code>. Do not hand-edit it; change <code>bb.edn</code> or upstream templates and render again.</li>
+        <li><strong>Compute deletion is gated.</strong> Upstream templates default to <code>prevent_destroy = true</code>. Set <code>BC_PAR_COMPUTE_PREVENT_DESTROY=false</code> only when intentionally destroying compute.</li>
+        <li><strong>The local plugin is fail-fast.</strong> If GitHub secret inspection fails for a non-404 reason, the plugin throws instead of silently widening secret visibility.</li>
+        <li><strong>Dotfile gitignore.</strong> This repository's <code>.gitignore</code> ignores dotfiles by default (<code>.*</code>) and explicitly unignores <code>.gitignore</code> and <code>.envrc.example</code>. Non-dot files such as <code>index.html</code> are not ignored by that rule; new private dotfiles require an intentional unignore strategy.</li>
+      </ul>
+    </section>
+
+    <section id="repo-model">
+      <h2>Repository model</h2>
+      <p>This checkout is a thin configuration layer. There is no application source and no local OpenTofu or Ansible template tree. The upstream <code>once</code> dependency contributes those templates and workflow functions.</p>
+      <table>
+        <thead><tr><th>Path</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>README.md</code></td><td>Short project summary and operator usage.</td></tr>
+          <tr><td><code>bb.edn</code></td><td>Main shim: task definitions, required namespaces, and the active <code>opts</code> map passed to upstream <code>once</code>.</td></tr>
+          <tr><td><code>deps.edn</code></td><td>Dependency root. Pins <code>io.github.bigconfig-ai/once</code> to a git SHA and includes local <code>src</code>.</td></tr>
+          <tr><td><code>.envrc.example</code></td><td>Committed template listing required <code>BC_PAR_*</code> variable names with empty values.</td></tr>
+          <tr><td><code>src/io/github/bigconfig_ai/once_ai/plugin.clj</code></td><td>Local <code>big-config</code> plugin that updates the GitHub org secret <code>SERVER_IP</code>.</td></tr>
+          <tr><td><code>test/io/github/bigconfig_ai/once_ai/plugin_test.clj</code></td><td>Unit tests for the local plugin and its <code>handle-step</code> override behavior.</td></tr>
+          <tr><td><code>.clj-kondo/</code>, <code>.lsp/</code></td><td>Editor and static-analysis support.</td></tr>
+          <tr><td><code>plan.md</code>, <code>plans/02.md</code></td><td>Historical implementation notes for deployment/plugin changes.</td></tr>
+          <tr><td><code>.dist/</code></td><td>Generated by upstream rendering during workflow execution; intentionally not source.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="dependency-model">
+      <h2>Dependency model</h2>
+      <p><code>bb.edn</code> declares one local dependency root:</p>
+<pre><code>{:deps {local/deps {:local/root <span class="str">"."</span>}}}</code></pre>
+      <p>The actual upstream library is pinned in <code>deps.edn</code>:</p>
+<pre><code>{:paths [<span class="str">"src"</span>]
+ :deps {io.github.bigconfig-ai/once
+        {:git/sha <span class="str">"901e266c3d0c9d78408d2ea902ac8bb10f06b3f1"</span>
+         <span class="com">#_#_</span>:local/root <span class="str">"../once/main"</span>}}}</code></pre>
+      <p>This has three consequences:</p>
+      <ol>
+        <li><code>bb tasks</code>, <code>bb validate</code>, or any other task may fetch the pinned upstream SHA into <code>~/.gitlibs</code>.</li>
+        <li>To test against a local upstream checkout, edit <code>deps.edn</code> and switch from <code>:git/sha</code> to <code>:local/root "../once/main"</code>.</li>
+        <li>The upstream task namespaces required by <code>bb.edn</code> use <code>io.github.amiorin.once.*</code>, even though the dependency coordinate is <code>io.github.bigconfig-ai/once</code>.</li>
+      </ol>
+    </section>
+
+    <section id="pipeline">
+      <h2>Upstream pipeline</h2>
+      <p><code>bb ai create</code> delegates to <code>io.github.amiorin.once.package/once*</code>. At the pinned SHA, the upstream create workflow is a six-stage pipeline:</p>
+      <div class="pipeline">
+        <div class="stage"><span class="n">1</span><div class="label">tofu</div><div class="sub">OCI VM</div></div>
+        <div class="stage"><span class="n">2</span><div class="label">tofu-smtp</div><div class="sub">Resend</div></div>
+        <div class="stage"><span class="n">3</span><div class="label">tofu-dns</div><div class="sub">Cloudflare</div></div>
+        <div class="stage"><span class="n">4</span><div class="label">tofu-smtp-post</div><div class="sub">verify mail</div></div>
+        <div class="stage"><span class="n">5</span><div class="label">ansible-local</div><div class="sub">SSH config</div></div>
+        <div class="stage"><span class="n">6</span><div class="label">ansible</div><div class="sub">remote host</div></div>
+      </div>
+      <h3>Stage responsibilities</h3>
+      <table>
+        <thead><tr><th>Stage</th><th>Default create args</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>tofu</code></td><td><code>render tofu:init tofu:apply:-auto-approve</code></td><td>Render and apply compute infrastructure. For this repo, the selected compute provider is OCI.</td></tr>
+          <tr><td><code>tofu-smtp</code></td><td><code>render tofu:init tofu:apply:-auto-approve</code></td><td>Create/configure Resend domain resources and expose DNS records for the DNS stage.</td></tr>
+          <tr><td><code>tofu-dns</code></td><td><code>render tofu:init tofu:apply:-auto-approve</code></td><td>Configure Cloudflare DNS for apex, wildcard, and Resend verification records.</td></tr>
+          <tr><td><code>tofu-smtp-post</code></td><td><code>render tofu:init tofu:apply:-auto-approve</code></td><td>Finalize SMTP verification after DNS exists.</td></tr>
+          <tr><td><code>ansible-local</code></td><td><code>render ansible-playbook:main.yml</code></td><td>Update local SSH configuration for the provisioned host. The local plugin hooks this step.</td></tr>
+          <tr><td><code>ansible</code></td><td><code>render ansible-playbook:main.yml</code></td><td>Configure the remote host, install runtime dependencies, and reconcile ONCE applications.</td></tr>
+        </tbody>
+      </table>
+      <h3>Delete pipeline</h3>
+      <p><code>bb ai delete</code> reverses only the OpenTofu-managed resources:</p>
+<pre><code>tofu-smtp-post → tofu-dns → tofu-smtp → tofu</code></pre>
+      <p>Ansible stages are configuration stages, not destroyable resources. Remote host state is effectively removed only when the compute instance is destroyed.</p>
+    </section>
+
+    <section id="param-flow">
+      <h2>Parameter flow</h2>
+      <p>The active map in <code>bb.edn</code> is passed into upstream workflow code and then repeatedly enriched by environment variables and Tofu outputs.</p>
+<pre><code>bb.edn opts
+  │
+  ├─ :big-config.render/profile = <span class="str">"ai"</span>
+  └─ :big-config.workflow/params = static provider + app params
+      │
+      ▼
+package/once* parses CLI args and selects :create / :delete
+      │
+      ▼
+params/once-opts and params/opts-fn
+      │
+      ├─ workflow/read-bc-pars merges BC_PAR_* environment values
+      ├─ tofu-smtp-params reads Resend/SMTP Tofu outputs
+      └─ tofu-params reads compute Tofu outputs, including :ip
+      │
+      ▼
+rendered templates + Ansible inventory + local plugin</code></pre>
+      <p>Environment variables win over static params. A key like <code>:litestream-access-key-id</code> maps to <code>BC_PAR_LITESTREAM_ACCESS_KEY_ID</code>: uppercase the key name and replace hyphens with underscores.</p>
+      <h3>Template placeholders</h3>
+      <p>The upstream renderer uses custom delimiters to avoid HCL conflicts. Application env values in this repo use the filter form:</p>
+<pre><code><span class="str">"LITESTREAM_BUCKET=&lt;{ litestream-bucket }&gt;"</span>
+<span class="str">"SUPERUSER_PASSWORD=&lt;{ superuser-password }&gt;"</span>
+<span class="str">"GOOGLE_CLIENT_SECRET=&lt;{ google-client-secret }&gt;"</span></code></pre>
+      <p>Those placeholders are resolved from <code>::workflow/params</code> after <code>BC_PAR_*</code> values are merged.</p>
+    </section>
+
+    <section id="plugin">
+      <h2>Local plugin: GitHub <code>SERVER_IP</code> secret</h2>
+      <p>The only local source namespace is <code>io.github.bigconfig-ai.once-ai.plugin</code>. It registers a <code>big-config.pluggable/handle-step</code> method for the upstream step keyword <code>:io.github.amiorin.once.tools/ansible-local</code>.</p>
+      <h3>Registration</h3>
+      <p><code>bb.edn</code> requires the plugin namespace before tasks run:</p>
+<pre><code>:requires ([io.github.amiorin.once.describe :as describe]
+           [io.github.amiorin.once.package :as package]
+           [io.github.amiorin.once.params :as params]
+           [io.github.amiorin.once.tools :as tools]
+           [io.github.amiorin.once.validation :as validation]
+           [io.github.bigconfig-ai.once-ai.plugin])</code></pre>
+      <h3>Execution logic</h3>
+<pre><code>(<span class="kw">defmethod</span> handle-step :io.github.amiorin.once.tools/ansible-local
+  [f _step _step-fns opts]
+  (<span class="kw">let</span> [opts' (f opts)]
+    (<span class="kw">if</span> (zero? (::bc/exit opts'))
+      (update-github-secret opts')
+      opts')))</code></pre>
+      <p>The override first runs the upstream <code>ansible-local</code> stage. If that stage succeeds, it reads <code>:ip</code> from <code>::workflow/params</code> and updates the org-level GitHub Actions secret.</p>
+      <h3>GitHub API behavior</h3>
+      <ol>
+        <li>Read existing secret metadata with <code>gh api /orgs/bigconfig-ai/actions/secrets/SERVER_IP</code>.</li>
+        <li>If the secret does not exist and GitHub returns 404, default visibility to <code>all</code>.</li>
+        <li>If the existing secret has <code>visibility = selected</code>, query <code>gh api --paginate /orgs/bigconfig-ai/actions/secrets/SERVER_IP/repositories</code>.</li>
+        <li>Run <code>gh secret set SERVER_IP --org bigconfig-ai --body &lt;ip&gt; --visibility &lt;visibility&gt;</code>.</li>
+        <li>For selected visibility, pass <code>--repos</code> with the current selected repository names so the update preserves repository access.</li>
+      </ol>
+      <div class="note"><span class="label">Operator check</span>Run <code>gh auth status</code> before <code>bb ai create</code>. A missing or under-scoped GitHub login can fail the workflow after infrastructure has already been applied.</div>
+      <h3>Not a delete hook</h3>
+      <p>The plugin updates <code>SERVER_IP</code> during create/reconcile. It does not clear or rotate the secret during <code>bb ai delete</code>.</p>
+    </section>
+
+    <section id="active-profile">
+      <h2>Active profile</h2>
+      <p>The active profile is an EDN map bound to <code>opts</code> in <code>bb.edn</code>. Upstream tasks receive it as the second argument:</p>
+<pre><code>ai {:doc <span class="str">"bb ai create | bb ai delete"</span>
+    :task (package/once* *command-line-args* opts)}</code></pre>
+      <p>The profile contains two top-level entries:</p>
+      <table>
+        <thead><tr><th>Key</th><th>Value</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>:big-config.render/profile</code></td><td><code>"ai"</code></td><td>Render/profile name used by upstream output paths and template selection.</td></tr>
+          <tr><td><code>:big-config.workflow/params</code></td><td>Nested params map</td><td>Provider selection, provider config, domain, package, SSH keys, and ONCE applications.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="providers">
+      <h2>Providers</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>SMTP <span class="pill">Resend</span></h4>
+          <div class="sub">Provider selected by <code>:provider-smtp</code></div>
+          <ul>
+            <li><code>:provider-smtp "resend"</code></li>
+            <li><code>:resend-server "smtp.resend.com"</code></li>
+            <li><code>:resend-port 587</code></li>
+            <li><code>:resend-username "resend"</code></li>
+            <li>Secrets: <code>BC_PAR_RESEND_API_KEY</code>, <code>BC_PAR_RESEND_PASSWORD</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>DNS <span class="pill">Cloudflare</span></h4>
+          <div class="sub">Provider selected by <code>:provider-dns</code></div>
+          <ul>
+            <li><code>:provider-dns "cloudflare"</code></li>
+            <li>Zone: <code>bigconfig.ai</code></li>
+            <li>Secret: <code>BC_PAR_CLOUDFLARE_API_TOKEN</code></li>
+            <li>Upstream creates apex, wildcard, and SMTP verification records.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>State backend <span class="pill">S3</span></h4>
+          <div class="sub">OpenTofu state, not application backups</div>
+          <ul>
+            <li><code>:provider-backend "s3"</code></li>
+            <li><code>:s3-region "eu-west-1"</code></li>
+            <li><code>:s3-bucket "tf-state-251213589273-eu-west-1"</code></li>
+            <li>AWS credentials must be available through the normal AWS CLI/provider chain.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Compute <span class="pill">OCI</span></h4>
+          <div class="sub">Oracle Cloud Ampere ARM VM</div>
+          <ul>
+            <li><code>:provider-compute "oci"</code></li>
+            <li><code>:oci-config-file-profile "DEFAULT"</code></li>
+            <li><code>:oci-display-name "once-ai"</code></li>
+            <li><code>:oci-shape "VM.Standard.A1.Flex"</code></li>
+            <li>1 OCPU, 6 GiB memory, 50 GiB boot volume, 30 VPUs/GB.</li>
+            <li>Subnet, compartment, and availability domain are pinned in <code>bb.edn</code>.</li>
+          </ul>
+        </div>
+      </div>
+      <h3>SSH public keys</h3>
+      <ul>
+        <li><code>:compute-pubkey</code> identifies the operator key used by cloud-init/provider provisioning and Ansible access. Its private half must be loaded in <code>ssh-agent</code>.</li>
+        <li><code>:deploy-pubkey</code> is installed by upstream onto the remote restricted <code>deploy</code> user for ONCE deployment workflows.</li>
+      </ul>
+    </section>
+
+    <section id="applications">
+      <h2>Applications</h2>
+      <p>The active <code>:once :applications</code> vector contains four containers. Every host is either the apex domain or a subdomain of <code>bigconfig.ai</code>.</p>
+      <table>
+        <thead><tr><th>Host</th><th>Image</th><th>Environment</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>www.bigconfig.ai</code></td>
+            <td><code>ghcr.io/bigconfig-ai/once-bigconfig:latest</code></td>
+            <td>None in this shim.</td>
+            <td>Main BigConfig website.</td>
+          </tr>
+          <tr>
+            <td><code>bigconfig.ai</code></td>
+            <td><code>ghcr.io/bigconfig-ai/once-caddy-redirect:latest</code></td>
+            <td>None in this shim.</td>
+            <td>Apex redirect / Caddy helper.</td>
+          </tr>
+          <tr>
+            <td><code>forms.bigconfig.ai</code></td>
+            <td><code>ghcr.io/bigconfig-ai/once-forms:latest</code></td>
+            <td><code>TARGET_EMAIL=forms@bigconfig.ai</code></td>
+            <td>Forms endpoint.</td>
+          </tr>
+          <tr>
+            <td><code>marketplace.bigconfig.ai</code></td>
+            <td><code>ghcr.io/bigconfig-ai/once-bigconfig-marketplace:latest</code></td>
+            <td>Litestream, PocketBase superuser, Google OAuth.</td>
+            <td>Marketplace app backed by PocketBase and Litestream object storage replication.</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Marketplace environment placeholders</h3>
+<pre><code>LITESTREAM_BUCKET=&lt;{ litestream-bucket }&gt;
+LITESTREAM_PATH=&lt;{ litestream-path }&gt;
+LITESTREAM_REGION=&lt;{ litestream-region }&gt;
+LITESTREAM_ACCESS_KEY_ID=&lt;{ litestream-access-key-id }&gt;
+LITESTREAM_SECRET_ACCESS_KEY=&lt;{ litestream-secret-access-key }&gt;
+LITESTREAM_SYNC_INTERVAL=&lt;{ litestream-sync-interval }&gt;
+SUPERUSER_EMAIL=&lt;{ superuser-email }&gt;
+SUPERUSER_PASSWORD=&lt;{ superuser-password }&gt;
+GOOGLE_CLIENT_ID=&lt;{ google-client-id }&gt;
+GOOGLE_CLIENT_SECRET=&lt;{ google-client-secret }&gt;</code></pre>
+      <div class="note"><span class="label">Distinction</span>The S3 backend in <code>:provider-backend</code> stores OpenTofu state. The <code>LITESTREAM_*</code> values configure application-level database replication for the marketplace container. They are separate storage concerns and may use different credentials or buckets.</div>
+    </section>
+
+    <section id="env-vars">
+      <h2><code>BC_PAR_*</code> environment variables</h2>
+      <p><code>.envrc.example</code> is the committed source of truth for this repo's runtime parameter placeholders. It contains names only, with empty values.</p>
+      <table>
+        <thead><tr><th>Env var</th><th>Param key</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr><td><code>BC_PAR_CLOUDFLARE_API_TOKEN</code></td><td><code>:cloudflare-api-token</code></td><td>Cloudflare DNS provider and validation.</td></tr>
+          <tr><td><code>BC_PAR_RESEND_API_KEY</code></td><td><code>:resend-api-key</code></td><td>Resend API/Terraform provider.</td></tr>
+          <tr><td><code>BC_PAR_RESEND_PASSWORD</code></td><td><code>:resend-password</code></td><td>SMTP password rendered for mail sending.</td></tr>
+          <tr><td><code>BC_PAR_LITESTREAM_BUCKET</code></td><td><code>:litestream-bucket</code></td><td>Marketplace Litestream target bucket.</td></tr>
+          <tr><td><code>BC_PAR_LITESTREAM_PATH</code></td><td><code>:litestream-path</code></td><td>Marketplace Litestream object prefix/path.</td></tr>
+          <tr><td><code>BC_PAR_LITESTREAM_REGION</code></td><td><code>:litestream-region</code></td><td>Marketplace Litestream object store region.</td></tr>
+          <tr><td><code>BC_PAR_LITESTREAM_ACCESS_KEY_ID</code></td><td><code>:litestream-access-key-id</code></td><td>Marketplace Litestream access key.</td></tr>
+          <tr><td><code>BC_PAR_LITESTREAM_SECRET_ACCESS_KEY</code></td><td><code>:litestream-secret-access-key</code></td><td>Marketplace Litestream secret key.</td></tr>
+          <tr><td><code>BC_PAR_LITESTREAM_SYNC_INTERVAL</code></td><td><code>:litestream-sync-interval</code></td><td>Marketplace Litestream sync interval.</td></tr>
+          <tr><td><code>BC_PAR_SUPERUSER_EMAIL</code></td><td><code>:superuser-email</code></td><td>PocketBase superuser bootstrap.</td></tr>
+          <tr><td><code>BC_PAR_SUPERUSER_PASSWORD</code></td><td><code>:superuser-password</code></td><td>PocketBase superuser bootstrap.</td></tr>
+          <tr><td><code>BC_PAR_GOOGLE_CLIENT_ID</code></td><td><code>:google-client-id</code></td><td>Google OAuth client ID for marketplace.</td></tr>
+          <tr><td><code>BC_PAR_GOOGLE_CLIENT_SECRET</code></td><td><code>:google-client-secret</code></td><td>Google OAuth client secret for marketplace.</td></tr>
+        </tbody>
+      </table>
+      <h3>Additional environment likely required</h3>
+      <p>Not every provider credential is listed in <code>.envrc.example</code>. The active profile also expects:</p>
+      <ul>
+        <li>OCI CLI configuration for profile <code>DEFAULT</code> in the standard OCI config location.</li>
+        <li>AWS credentials for the OpenTofu S3 state backend, available through the AWS CLI / SDK credential chain.</li>
+        <li>GitHub CLI authentication for <code>gh secret set --org bigconfig-ai</code>.</li>
+        <li>An <code>ssh-agent</code> containing the private key corresponding to <code>:compute-pubkey</code>.</li>
+      </ul>
+    </section>
+
+    <section id="editing">
+      <h2>Editing configuration</h2>
+      <p>Most changes happen in <code>bb.edn</code>. The active params map is literal data; edit it, validate, then re-run the create workflow.</p>
+      <h3>Common changes</h3>
+      <table>
+        <thead><tr><th>Goal</th><th>Edit</th><th>Then run</th></tr></thead>
+        <tbody>
+          <tr><td>Change an application image tag</td><td><code>:once :applications N :image</code></td><td><code>bb validate</code>, <code>bb ai create</code>, <code>bb describe</code></td></tr>
+          <tr><td>Add or remove an app</td><td><code>:once :applications</code> vector</td><td><code>bb validate</code>, <code>bb ai create</code></td></tr>
+          <tr><td>Add app env</td><td><code>:env</code> vector under the app map; add matching <code>BC_PAR_*</code> if secret</td><td><code>bb validate</code>, <code>bb ai create</code></td></tr>
+          <tr><td>Change OCI size</td><td><code>:oci-shape</code>, <code>:oci-ocpus</code>, <code>:oci-memory-in-gbs</code>, boot params</td><td><code>bb validate</code>, <code>bb ai create</code></td></tr>
+          <tr><td>Change domain</td><td><code>:domain</code> and every app <code>:host</code></td><td>Prepare Cloudflare zone first, then <code>bb validate</code></td></tr>
+          <tr><td>Pick up upstream <code>once</code> changes</td><td><code>:git/sha</code> in <code>deps.edn</code></td><td><code>bb tasks</code>, <code>bb validate</code>, targeted stage render if needed</td></tr>
+          <tr><td>Develop against local upstream</td><td>Switch <code>deps.edn</code> from <code>:git/sha</code> to <code>:local/root "../once/main"</code></td><td><code>bb tasks</code>, <code>bb validate</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="tasks">
+      <h2>Task inventory</h2>
+      <p><code>bb tasks</code> exposes the public task set:</p>
+<pre><code>help     the workflow help
+ai       bb ai create | bb ai delete
+validate validate active profile, tools, credentials, and docker images
+describe describe active profile providers, compute, and deployed applications</code></pre>
+      <p>There are also internal/scoped tasks whose names begin with <code>-</code>; they are useful for tests, formatting, and individual workflow stages.</p>
+    </section>
+
+    <section id="ai-command">
+      <h2><code>bb ai</code></h2>
+      <p>The primary entry point delegates directly to upstream <code>package/once*</code> with the active <code>opts</code> map.</p>
+<pre><code><span class="kw">bb</span> ai create           <span class="com"># render and apply the full create pipeline</span>
+<span class="kw">bb</span> ai delete           <span class="com"># destroy OpenTofu-managed resources in reverse order</span>
+<span class="kw">bb</span> ai delete create    <span class="com"># clean-slate redeploy pattern</span></code></pre>
+      <h3>Create effects</h3>
+      <ul>
+        <li>Renders upstream templates under <code>.dist/</code>.</li>
+        <li>Initializes and applies OpenTofu stages.</li>
+        <li>Reads Tofu outputs back into workflow params.</li>
+        <li>Updates local SSH config via <code>ansible-local</code>.</li>
+        <li>Runs the local GitHub secret plugin after successful <code>ansible-local</code>.</li>
+        <li>Configures the remote host and reconciles ONCE applications via <code>ansible</code>.</li>
+      </ul>
+      <h3>Delete effects</h3>
+      <ul>
+        <li>Destroys <code>tofu-smtp-post</code>, <code>tofu-dns</code>, <code>tofu-smtp</code>, and <code>tofu</code> in that order.</li>
+        <li>Does not run Ansible destroy hooks.</li>
+        <li>Does not clear GitHub <code>SERVER_IP</code>.</li>
+      </ul>
+    </section>
+
+    <section id="validate">
+      <h2><code>bb validate</code></h2>
+      <p>Runs upstream validation for the active params. It is the standard pre-flight before any create or destructive operation.</p>
+      <ul>
+        <li><strong>Schema:</strong> provider-specific params exist and have the expected shapes; app hosts are valid and within <code>bigconfig.ai</code>.</li>
+        <li><strong>Tools:</strong> required CLIs are present on <code>PATH</code>.</li>
+        <li><strong>Credentials:</strong> provider tokens and local CLI credentials work against live APIs where upstream supports checks.</li>
+        <li><strong>SSH agent:</strong> cloud compute profile requires the configured compute public key to be loaded in <code>ssh-agent</code>.</li>
+        <li><strong>Images:</strong> every <code>:image</code> resolves via <code>skopeo inspect</code>.</li>
+      </ul>
+<pre><code><span class="kw">bb</span> validate</code></pre>
+      <div class="note"><span class="label">Scope</span><code>bb validate</code> is upstream validation. The local GitHub secret plugin has unit tests, but <code>validate</code> does not guarantee that <code>gh secret set</code> will succeed at deployment time.</div>
+    </section>
+
+    <section id="describe">
+      <h2><code>bb describe</code></h2>
+      <p>Delegates to upstream <code>io.github.amiorin.once.describe/describe*</code>. It renders/merges params and reports provider configuration, compute reachability, and deployed application state.</p>
+<pre><code><span class="kw">bb</span> describe</code></pre>
+      <p>Use this after <code>bb ai create</code> or after changing image tags to confirm the running state. Upstream describe can compare running image digests to live registry digests when the remote host is reachable and registry inspection succeeds.</p>
+    </section>
+
+    <section id="stage-tasks">
+      <h2>Individual stage tasks</h2>
+      <p>Scoped tasks call upstream tool wrappers with <code>(params/once-opts opts)</code>. They are useful for render-only inspection, plans, one-stage retries, and debugging.</p>
+      <table>
+        <thead><tr><th>Task</th><th>Example</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>-tofu</code></td><td><code>bb -tofu render tofu:init tofu:plan</code></td><td>Compute stage.</td></tr>
+          <tr><td><code>-tofu-smtp</code></td><td><code>bb -tofu-smtp render tofu:init tofu:plan</code></td><td>Resend domain stage.</td></tr>
+          <tr><td><code>-tofu-dns</code></td><td><code>bb -tofu-dns render tofu:init tofu:plan</code></td><td>Cloudflare DNS stage.</td></tr>
+          <tr><td><code>-tofu-smtp-post</code></td><td><code>bb -tofu-smtp-post render tofu:init tofu:plan</code></td><td>Post-DNS Resend verification stage.</td></tr>
+          <tr><td><code>-ansible-local</code></td><td><code>bb -ansible-local render ansible-playbook:main.yml</code></td><td>Local SSH config stage. Also triggers the local plugin when run through the pluggable step path.</td></tr>
+          <tr><td><code>-ansible</code></td><td><code>bb -ansible render ansible-playbook:main.yml</code></td><td>Remote host and ONCE app reconciliation stage.</td></tr>
+        </tbody>
+      </table>
+      <p>For render-only debugging, use just <code>render</code>. For destructive Tofu debugging, be explicit and keep the <code>prevent_destroy</code> safety behavior in mind.</p>
+    </section>
+
+    <section id="tests">
+      <h2>Tests and tidy</h2>
+      <h3>Plugin tests</h3>
+      <p><code>bb -test</code> loads <code>test</code> as an extra path, requires <code>io.github.bigconfig-ai.once-ai.plugin-test</code>, and runs Clojure tests for the local plugin.</p>
+<pre><code><span class="kw">bb</span> -test</code></pre>
+      <p>The tests stub <code>babashka.process/shell</code> and exercise:</p>
+      <ul>
+        <li>Preserving existing <code>visibility = all</code>.</li>
+        <li>Preserving selected repository access.</li>
+        <li>Defaulting to <code>visibility = all</code> on 404.</li>
+        <li>Throwing on non-404 GitHub API failures.</li>
+        <li>Calling the GitHub update after upstream step success.</li>
+        <li>Skipping the GitHub update after upstream step failure.</li>
+      </ul>
+      <h3>Tidy</h3>
+<pre><code><span class="kw">bb</span> -tidy</code></pre>
+      <p>Runs <code>clojure-lsp clean-ns</code> and <code>clojure-lsp format</code>. It requires <code>clojure-lsp</code> on <code>PATH</code>.</p>
+    </section>
+
+    <section id="deploy-runbook">
+      <h2>Deploy runbook</h2>
+      <ol>
+        <li><strong>Sync source:</strong> update this checkout and confirm <code>deps.edn</code> pins the intended upstream <code>once</code> SHA.</li>
+        <li><strong>Load environment:</strong> ensure <code>.envrc</code> exports all variables from <code>.envrc.example</code>; do not print values.</li>
+        <li><strong>Check cloud CLIs:</strong> <code>oci</code>, <code>aws</code>, and <code>gh</code> should already be authenticated for the target accounts/org.</li>
+        <li><strong>Check SSH agent:</strong> <code>ssh-add -L</code> contains the private half for <code>:compute-pubkey</code>.</li>
+        <li><strong>Pre-flight:</strong> run <code>bb validate</code> and fix every issue.</li>
+        <li><strong>Apply:</strong> run <code>bb ai create</code>.</li>
+        <li><strong>Inspect:</strong> run <code>bb describe</code>.</li>
+        <li><strong>Verify externally:</strong> open <a href="https://www.bigconfig.ai/">www.bigconfig.ai</a>, <a href="https://bigconfig.ai/">bigconfig.ai</a>, <a href="https://forms.bigconfig.ai/">forms.bigconfig.ai</a>, and <a href="https://marketplace.bigconfig.ai/">marketplace.bigconfig.ai</a>.</li>
+        <li><strong>Check GitHub secret:</strong> verify that org Actions secret <code>SERVER_IP</code> was updated for the intended visibility/repositories.</li>
+      </ol>
+    </section>
+
+    <section id="teardown-runbook">
+      <h2>Teardown runbook</h2>
+      <ol>
+        <li>Confirm the teardown is intentional and that backups/application data are handled separately.</li>
+        <li>Ensure all provider credentials are still valid: AWS state access, OCI, Cloudflare, Resend.</li>
+        <li>Export the destroy override only for the delete command:</li>
+      </ol>
+<pre><code><span class="kw">BC_PAR_COMPUTE_PREVENT_DESTROY</span>=<span class="str">false</span> <span class="kw">bb</span> ai delete</code></pre>
+      <ol start="4">
+        <li>Review OpenTofu output for all four destroy stages.</li>
+        <li>Manually decide whether to rotate or remove GitHub <code>SERVER_IP</code>; the workflow does not remove it.</li>
+      </ol>
+      <div class="note danger"><span class="label">Danger</span>Deleting compute removes the host running ONCE applications. Marketplace persistence depends on the configured application-level backup/replication story, not on this repo.</div>
+    </section>
+
+    <section id="update-runbook">
+      <h2>Update runbook</h2>
+      <h3>Update an application image</h3>
+      <ol>
+        <li>Edit the relevant <code>:image</code> in <code>bb.edn</code>. Prefer immutable tags or digests when release reproducibility matters.</li>
+        <li>Run <code>bb validate</code> so <code>skopeo</code> verifies the image exists.</li>
+        <li>Run <code>bb ai create</code> to reconcile the ONCE app definition.</li>
+        <li>Run <code>bb describe</code> to compare the running digest with the registry digest.</li>
+      </ol>
+      <h3>Update upstream <code>once</code></h3>
+      <ol>
+        <li>Change the <code>:git/sha</code> in <code>deps.edn</code>.</li>
+        <li>Run <code>bb tasks</code> to force dependency resolution.</li>
+        <li>Review upstream release/source changes, especially workflow step names and <code>handle-step</code> signature compatibility.</li>
+        <li>Run <code>bb -test</code> for local plugin tests.</li>
+        <li>Run <code>bb validate</code>.</li>
+      </ol>
+      <h3>Change provider-level infrastructure</h3>
+      <p>Changing OCI subnet, compartment, shape, boot volume, or domain/DNS values may cause Tofu to replace resources. Always inspect plans through individual stage tasks before applying high-impact changes.</p>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>Troubleshooting</h2>
+      <h3><code>bb tasks</code> cannot resolve dependencies</h3>
+      <ul>
+        <li>Check network access to GitHub.</li>
+        <li>Confirm <code>deps.edn</code> contains a valid <code>:git/sha</code>.</li>
+        <li>Remove or refresh stale entries in <code>~/.gitlibs</code> only if dependency resolution is clearly corrupted.</li>
+      </ul>
+      <h3><code>bb validate</code> fails on tools</h3>
+      <ul>
+        <li>Install the missing command reported by validation.</li>
+        <li>Ensure it is available in the same shell where direnv/environment variables are loaded.</li>
+      </ul>
+      <h3>OCI validation or apply fails</h3>
+      <ul>
+        <li>Confirm <code>~/.oci/config</code> has profile <code>DEFAULT</code>.</li>
+        <li>Confirm the configured subnet, compartment, and availability domain still exist and are accessible.</li>
+        <li>Oracle free-tier/ARM capacity can be region and AD dependent; shape creation may fail despite valid config.</li>
+      </ul>
+      <h3>S3 backend fails</h3>
+      <ul>
+        <li>Do not confuse the OpenTofu state bucket with Litestream application storage.</li>
+        <li>Run an AWS identity/bucket check with the same environment used for <code>bb ai create</code>.</li>
+        <li>Confirm the bucket region is <code>eu-west-1</code> and credentials permit state read/write/lock behavior required by OpenTofu.</li>
+      </ul>
+      <h3>Cloudflare or Resend fails</h3>
+      <ul>
+        <li>Confirm <code>BC_PAR_CLOUDFLARE_API_TOKEN</code> has access to the <code>bigconfig.ai</code> zone.</li>
+        <li>Confirm <code>BC_PAR_RESEND_API_KEY</code> is valid for the Resend account.</li>
+        <li>DNS propagation can delay Resend verification after the DNS stage.</li>
+      </ul>
+      <h3>Ansible cannot connect</h3>
+      <ul>
+        <li>Run <code>ssh-add -L</code> and verify the configured compute public key is loaded.</li>
+        <li>Check the local SSH config generated by <code>ansible-local</code>.</li>
+        <li>Confirm the VM has a public IP from the Tofu output and security rules allow SSH.</li>
+      </ul>
+      <h3>Marketplace app starts without expected config</h3>
+      <ul>
+        <li>Check every <code>BC_PAR_LITESTREAM_*</code>, <code>BC_PAR_SUPERUSER_*</code>, and <code>BC_PAR_GOOGLE_*</code> variable is exported.</li>
+        <li>Inspect rendered Ansible/ONCE output in <code>.dist/</code> without committing secrets.</li>
+      </ul>
+      <h3>GitHub secret update fails</h3>
+      <ul>
+        <li>Run <code>gh auth status</code>.</li>
+        <li>Confirm the authenticated GitHub identity can manage organization Actions secrets for <code>bigconfig-ai</code>.</li>
+        <li>If the existing secret uses selected repositories, confirm the identity can read that selected repository list.</li>
+        <li>Rerun the failed workflow once auth is fixed; upstream stages are designed to be idempotent.</li>
+      </ul>
+      <h3><code>bb ai delete</code> refuses to destroy compute</h3>
+      <p>This is expected. Set <code>BC_PAR_COMPUTE_PREVENT_DESTROY=false</code> only for the delete operation.</p>
+    </section>
+
+    <section id="files">
+      <h2>File reference</h2>
+      <table>
+        <thead><tr><th>File</th><th>Detailed notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>bb.edn</code></td><td>Requires upstream namespaces and the local plugin; defines <code>opts</code>; exposes <code>ai</code>, <code>validate</code>, <code>describe</code>, scoped stage tasks, <code>-test</code>, and <code>-tidy</code>.</td></tr>
+          <tr><td><code>deps.edn</code></td><td>Includes <code>src</code> and pins upstream <code>io.github.bigconfig-ai/once</code>. This is the file to edit for local upstream development or upstream SHA bumps.</td></tr>
+          <tr><td><code>.envrc.example</code></td><td>Lists required <code>BC_PAR_*</code> names for Cloudflare, Resend, Litestream, PocketBase, and Google OAuth. Copy to a private local env file and fill values.</td></tr>
+          <tr><td><code>src/.../plugin.clj</code></td><td>Uses <code>babashka.process/shell</code>, <code>cheshire</code>, <code>big-config.pluggable/handle-step</code>, and <code>big-config.workflow</code>. Constants: org <code>bigconfig-ai</code>, secret <code>SERVER_IP</code>.</td></tr>
+          <tr><td><code>test/.../plugin_test.clj</code></td><td>Stubs shell calls and verifies GitHub secret update behavior without making network calls.</td></tr>
+          <tr><td><code>.clj-kondo/config.edn</code></td><td>Lint-as config for macros/helpers used by upstream dependencies.</td></tr>
+          <tr><td><code>.lsp/config.edn</code></td><td>Configures clojure-lsp, including ignored client directories and <code>debug</code> indentation.</td></tr>
+          <tr><td><code>.gitignore</code></td><td>Dotfile ignore pattern (<code>.*</code>) with explicit unignore entries for <code>.gitignore</code> and <code>.envrc.example</code>. Be intentional when adding new private dotfiles.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="param-table">
+      <h2>Parameter table</h2>
+      <p>Selected static params from <code>bb.edn</code>. Secret values are intentionally omitted.</p>
+      <table>
+        <thead><tr><th>Param</th><th>Value / shape</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>:domain</code></td><td><code>"bigconfig.ai"</code></td><td>Base domain for Cloudflare, Resend, and app host validation.</td></tr>
+          <tr><td><code>:package</code></td><td><code>"ai"</code></td><td>Used in output/package naming.</td></tr>
+          <tr><td><code>:provider-smtp</code></td><td><code>"resend"</code></td><td>Selects upstream SMTP templates.</td></tr>
+          <tr><td><code>:resend-server</code></td><td><code>"smtp.resend.com"</code></td><td>SMTP server rendered onto remote host/app config.</td></tr>
+          <tr><td><code>:resend-port</code></td><td><code>587</code></td><td>SMTP submission port.</td></tr>
+          <tr><td><code>:resend-username</code></td><td><code>"resend"</code></td><td>Static Resend SMTP username.</td></tr>
+          <tr><td><code>:provider-dns</code></td><td><code>"cloudflare"</code></td><td>Selects Cloudflare DNS templates/checks.</td></tr>
+          <tr><td><code>:provider-backend</code></td><td><code>"s3"</code></td><td>Selects OpenTofu backend template.</td></tr>
+          <tr><td><code>:s3-bucket</code></td><td><code>"tf-state-251213589273-eu-west-1"</code></td><td>OpenTofu state bucket.</td></tr>
+          <tr><td><code>:s3-region</code></td><td><code>"eu-west-1"</code></td><td>OpenTofu state bucket region.</td></tr>
+          <tr><td><code>:provider-compute</code></td><td><code>"oci"</code></td><td>Selects Oracle Cloud compute templates/checks.</td></tr>
+          <tr><td><code>:oci-config-file-profile</code></td><td><code>"DEFAULT"</code></td><td>OCI CLI profile name.</td></tr>
+          <tr><td><code>:oci-display-name</code></td><td><code>"once-ai"</code></td><td>OCI instance display name.</td></tr>
+          <tr><td><code>:oci-shape</code></td><td><code>"VM.Standard.A1.Flex"</code></td><td>Ampere ARM flexible shape.</td></tr>
+          <tr><td><code>:oci-ocpus</code></td><td><code>1</code></td><td>Compute size.</td></tr>
+          <tr><td><code>:oci-memory-in-gbs</code></td><td><code>6</code></td><td>Compute memory.</td></tr>
+          <tr><td><code>:oci-boot-volume-size-in-gbs</code></td><td><code>50</code></td><td>Boot volume size.</td></tr>
+          <tr><td><code>:oci-boot-volume-vpus-per-gb</code></td><td><code>30</code></td><td>Boot volume performance setting.</td></tr>
+          <tr><td><code>:oci-ssh-authorized-keys</code></td><td><code>"~/.ssh/id_ed25519.pub"</code></td><td>Path used by OCI provisioning/templates.</td></tr>
+          <tr><td><code>:compute-pubkey</code></td><td>SSH public key</td><td>Private half must be loaded in <code>ssh-agent</code>.</td></tr>
+          <tr><td><code>:deploy-pubkey</code></td><td>SSH public key</td><td>Installed for upstream restricted deploy flow.</td></tr>
+          <tr><td><code>:once :applications</code></td><td>Vector of 4 app maps</td><td>Source of ONCE app reconciliation.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="links">
+      <h2>Public links</h2>
+      <ul>
+        <li><a href="https://www.bigconfig.ai/">bigconfig.ai website</a></li>
+        <li><a href="https://github.com/bigconfig-ai/once">Upstream <code>io.github.bigconfig-ai/once</code> repository</a></li>
+        <li><a href="https://github.com/amiorin/big-config">big-config workflow/rendering primitives</a></li>
+        <li><a href="https://opentofu.org/">OpenTofu</a></li>
+        <li><a href="https://docs.ansible.com/">Ansible documentation</a></li>
+        <li><a href="https://www.oracle.com/cloud/">Oracle Cloud Infrastructure</a></li>
+        <li><a href="https://developers.cloudflare.com/">Cloudflare developer docs</a></li>
+        <li><a href="https://resend.com/docs">Resend docs</a></li>
+        <li><a href="https://cli.github.com/manual/">GitHub CLI manual</a></li>
+        <li><a href="https://litestream.io/">Litestream</a></li>
+        <li><a href="https://pocketbase.io/docs/">PocketBase docs</a></li>
+      </ul>
+    </section>
+  </main>
+</div>
+</body>
+</html>
