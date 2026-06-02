@@ -46,10 +46,6 @@
          :repositories
          (map :name))))
 
-(defn- ansible-playbook-main?
-  [opts]
-  (some #(= "ansible-playbook main.yml" %) (:big-config.run/cmds opts)))
-
 (defn- real-ip
   [opts]
   (let [ip (some-> (get-in opts [::workflow/params :ip]) str)]
@@ -75,8 +71,7 @@
 (defn- handle-ansible-local
   [f _step _step-fns opts]
   (let [opts' (f opts)]
-    (if (and (zero? (get opts' ::bc/exit 0))
-             (ansible-playbook-main? opts))
+    (if (zero? (get opts' ::bc/exit 0))
       (update-github-secret opts')
       opts')))
 
