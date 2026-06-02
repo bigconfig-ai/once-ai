@@ -6,7 +6,7 @@
          '[io.github.bigconfig-ai.once.cli :as cli])
 
 (def default-profile
-  {::render/profile "website"
+  {::render/profile "ai"
    ::workflow/params {:provider-smtp "resend"
                       :resend-server "smtp.resend.com"
                       :resend-port 587
@@ -34,16 +34,16 @@
                       :oci-boot-volume-vpus-per-gb 30
                       :oci-ssh-authorized-keys     "~/.ssh/id_ed25519.pub"
 
-                      :domain "bigconfig.website"
-                      :package "website"
-                      :once {:applications [{:host  "www.bigconfig.website"
+                      :domain "bigconfig.ai"
+                      :package "ai"
+                      :once {:applications [{:host  "www.bigconfig.ai"
                                              :image "ghcr.io/bigconfig-ai/once-bigconfig:latest"}
-                                            {:host  "bigconfig.website"
+                                            {:host  "bigconfig.ai"
                                              :image "ghcr.io/bigconfig-ai/once-caddy-redirect:latest"}
-                                            {:host "forms.bigconfig.website"
+                                            {:host "forms.bigconfig.ai"
                                              :image "ghcr.io/bigconfig-ai/once-forms:latest"
-                                             :env ["TARGET_EMAIL=forms@bigconfig.website"]}
-                                            {:host "marketplace.bigconfig.website"
+                                             :env ["TARGET_EMAIL=forms@bigconfig.ai"]}
+                                            {:host "marketplace.bigconfig.ai"
                                              :image "ghcr.io/bigconfig-ai/once-bigconfig-marketplace:latest"
                                              :env ["LITESTREAM_BUCKET=once-pocketbase-251213589273-eu-west-1"
                                                    "LITESTREAM_PATH=<{ profile }>/once-bigconfig-marketplace/data.db"
