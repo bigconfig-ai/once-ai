@@ -2,6 +2,7 @@
 
 (require '[big-config.render :as render]
          '[big-config.workflow :as workflow]
+         '[io.github.bigconfig-ai.once-website.plugin]
          '[io.github.bigconfig-ai.once.cli :as cli])
 
 (def default-profile
@@ -50,7 +51,7 @@
                                                    "LITESTREAM_SYNC_INTERVAL=10s"
                                                    "LITESTREAM_ACCESS_KEY_ID=<{ litestream-access-key-id }>"
                                                    "LITESTREAM_SECRET_ACCESS_KEY=<{ litestream-secret-access-key }>"
-                                                   "SUPERUSER_EMAIL=marketplace@bigconfig.website"
+                                                   "SUPERUSER_EMAIL=marketplace@bigconfig.it"
                                                    "SUPERUSER_PASSWORD=<{ superuser-password }>"
                                                    "GOOGLE_CLIENT_ID=<{ google-client-id }>"
                                                    "GOOGLE_CLIENT_SECRET=<{ google-client-secret }>"]}]}}})
