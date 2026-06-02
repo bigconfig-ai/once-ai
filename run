@@ -2,7 +2,7 @@
 
 (require '[big-config.render :as render]
          '[big-config.workflow :as workflow]
-         '[io.github.bigconfig-ai.once-website.plugin]
+         '[io.github.bigconfig-ai.once-ai.plugin]
          '[io.github.bigconfig-ai.once.cli :as cli])
 
 (def default-profile

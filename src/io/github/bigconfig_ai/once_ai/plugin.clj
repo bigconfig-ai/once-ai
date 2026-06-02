@@ -1,4 +1,4 @@
-(ns io.github.bigconfig-ai.once-website.plugin
+(ns io.github.bigconfig-ai.once-ai.plugin
   (:require
    [babashka.process :as process]
    [big-config :as bc]
