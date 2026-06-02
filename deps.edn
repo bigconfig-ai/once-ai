@@ -1,0 +1,7 @@
+{:deps {io.github.bigconfig-ai/once {:git/url "https://github.com/bigconfig-ai/once.git"
+                           :git/sha "0821c7fbaf6b2e0d96d0f409ef978457e411a671"}}
+ :bigconfig/repo "bigconfig-ai/once"
+ :bigconfig/ref "clojure"
+ :bigconfig/sha "0821c7fbaf6b2e0d96d0f409ef978457e411a671"
+ :bigconfig/language "clojure"
+ :bigconfig/run "run"}

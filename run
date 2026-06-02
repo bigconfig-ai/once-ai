@@ -1,0 +1,58 @@
+#!/usr/bin/env bb
+
+(require '[big-config.render :as render]
+         '[big-config.workflow :as workflow]
+         '[io.github.bigconfig-ai.once.cli :as cli])
+
+(def default-profile
+  {::render/profile "website"
+   ::workflow/params {:provider-smtp "resend"
+                      :resend-server "smtp.resend.com"
+                      :resend-port 587
+                      :resend-username "resend"
+
+                      :compute-pubkey "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDKdUkY+SfRm6ttOz2EEZ2+i/zm+o1mpMOdMeGUr0t4 32617+amiorin@users.noreply.github.com"
+                      :deploy-pubkey    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1Lbgxiv2OnDKwc8Wx25SQlGyI+iY1drUii/IMZ3YSh deploy@bigconfig.ai"
+
+                      :provider-dns "cloudflare"
+
+                      :provider-backend "s3"
+                      :s3-bucket        "tf-state-251213589273-eu-west-1"
+                      :s3-region        "eu-west-1"
+
+                      :provider-compute            "oci"
+                      :oci-config-file-profile     "DEFAULT"
+                      :oci-subnet-id               "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaaotya32pihejgi25vrdfnjda3qg52kpsjnd7od5oiqifbsi4rqqma"
+                      :oci-compartment-id          "ocid1.tenancy.oc1..aaaaaaaal4wmmpzv2fzkdz2vrfdizywgzjid6dqlgcankrrr7jyydo7ozb3a"
+                      :oci-availability-domain     "xTQn:EU-FRANKFURT-1-AD-1"
+                      :oci-display-name            "once-ai"
+                      :oci-shape                   "VM.Standard.A1.Flex"
+                      :oci-ocpus                   1
+                      :oci-memory-in-gbs           6
+                      :oci-boot-volume-size-in-gbs 50
+                      :oci-boot-volume-vpus-per-gb 30
+                      :oci-ssh-authorized-keys     "~/.ssh/id_ed25519.pub"
+
+                      :domain "bigconfig.website"
+                      :package "website"
+                      :once {:applications [{:host  "www.bigconfig.website"
+                                             :image "ghcr.io/bigconfig-ai/once-bigconfig:latest"}
+                                            {:host  "bigconfig.website"
+                                             :image "ghcr.io/bigconfig-ai/once-caddy-redirect:latest"}
+                                            {:host "forms.bigconfig.website"
+                                             :image "ghcr.io/bigconfig-ai/once-forms:latest"
+                                             :env ["TARGET_EMAIL=forms@bigconfig.website"]}
+                                            {:host "marketplace.bigconfig.website"
+                                             :image "ghcr.io/bigconfig-ai/once-bigconfig-marketplace:latest"
+                                             :env ["LITESTREAM_BUCKET=once-pocketbase-251213589273-eu-west-1"
+                                                   "LITESTREAM_PATH=<{ profile }>/once-bigconfig-marketplace/data.db"
+                                                   "LITESTREAM_REGION=eu-west-1"
+                                                   "LITESTREAM_SYNC_INTERVAL=10s"
+                                                   "LITESTREAM_ACCESS_KEY_ID=<{ litestream-access-key-id }>"
+                                                   "LITESTREAM_SECRET_ACCESS_KEY=<{ litestream-secret-access-key }>"
+                                                   "SUPERUSER_EMAIL=marketplace@bigconfig.website"
+                                                   "SUPERUSER_PASSWORD=<{ superuser-password }>"
+                                                   "GOOGLE_CLIENT_ID=<{ google-client-id }>"
+                                                   "GOOGLE_CLIENT_SECRET=<{ google-client-secret }>"]}]}}})
+
+(cli/main* *command-line-args* default-profile)
